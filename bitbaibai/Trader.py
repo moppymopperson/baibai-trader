@@ -65,8 +65,13 @@ class Trader:
         a sychronous manner. 
         """
         # Checking price
-        price = self.authenticator.get_current_price()
-        logging.info('Received price update: %s', price)
+        try:
+            price = self.authenticator.get_current_price()
+            logging.info('Received price update: %s', price)
+        except Exception as e:
+            logging.error('Failed to get price with error: %s', e)
+            return
+
         self.algorithm.process_data([price])
 
         # Buying

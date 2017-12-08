@@ -6,6 +6,7 @@ its members and that its state is correct following each trade cycle.
 """
 from bitbaibai.Trader import Trader
 from unittest import TestCase
+from .mocks import MockAlgorithm, MockAuthenticator
 
 
 class TestTrader(TestCase):
@@ -60,55 +61,3 @@ class TestTrader(TestCase):
         assert self.trader.authenticator.n_buys == 0
         assert self.trader.authenticator.n_sells == \
             self.trader.algorithm.determine_sell_volume()
-
-
-class MockAlgorithm:
-    n_data = 0
-    n_check_buy = 0
-    n_check_sell = 0
-    n_buy_volume = 0
-    n_sell_volume = 0
-    should_buy = False
-    should_sell = False
-
-    def process_data(self, samples):
-        self.n_data += len(samples)
-
-    def check_should_buy(self):
-        self.n_check_buy += 1
-        return self.should_buy
-
-    def check_should_sell(self):
-        self.n_check_sell += 1
-        return self.should_sell
-
-    def determine_buy_volume(self):
-        self.n_buy_volume += 1
-        return 50.0
-
-    def determine_sell_volume(self):
-        self.n_sell_volume += 1
-        return 25.0
-
-
-class MockAuthenticator:
-    n_checks = 0
-    n_buys = 0
-    n_sells = 0
-    should_fail = False
-
-    def get_current_price(self):
-        self.n_checks += 1
-        return 42.0
-
-    def buy(self, n_shares):
-        if not self.should_fail:
-            self.n_buys += n_shares
-        else:
-            raise Exception()
-
-    def sell(self, n_shares):
-        if not self.should_fail:
-            self.n_sells += n_shares
-        else:
-            raise Exception()
