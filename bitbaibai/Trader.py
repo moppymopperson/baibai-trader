@@ -1,5 +1,6 @@
-#!/usr/bin/env python 
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
+
 
 class Trader:
 
@@ -9,15 +10,4 @@ class Trader:
 
     def begin_trading():
 
-        for loop:
-            self.authenticator.get_current_price()
-
-
-        if len(data) > self.algorithm.min_samples:
-            buy = self.algorithm.make_decision(data)
-            if buy:
-                self.authenticator.buy(1)
-
-
-trader = Trader(CoinCheckAuthenticator(), NagatomoAlgorithm())
-trader.start_trading()
+        self.authenticator.get_current_price()
