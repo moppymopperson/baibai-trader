@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
-import Algorithm
+from .Algorithm import Algorithm
 
 
 class NagatomoAlgorithm(Algorithm):

@@ -5,6 +5,7 @@ This file contains an abstract base class (ABC) that serves as an interface for
 any algorithm used to determine when to buy and sell.
 """
 from abc import ABC, abstractmethod
+from .PriceSample import PriceSample
 
 
 class Algorithm(ABC):
@@ -25,7 +26,8 @@ class Algorithm(ABC):
         price_samples: array of PriceSample
             An array of `PriceSample` data points
         """
-        pass
+        assert all(isinstance(item, PriceSample) for item in price_samples),
+            "Not all items in price_samples were `PriceSample` objects"
 
     @abstractmethod
     def check_should_buy(self):
