@@ -1,11 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-This file provides utilities for testing 
+This file provides utilities for testing
 """
+from bitbaibai import Algorithm, Authenticator
 
 
-class MockAlgorithm:
+class MockAlgorithm(Algorithm):
     n_data = 0
     n_check_buy = 0
     n_check_sell = 0
@@ -34,7 +35,7 @@ class MockAlgorithm:
         return 25.0
 
 
-class MockAuthenticator:
+class MockAuthenticator(Authenticator):
     n_checks = 0
     n_buys = 0
     n_sells = 0
@@ -58,3 +59,6 @@ class MockAuthenticator:
             self.n_sells += n_shares
         else:
             raise Exception()
+
+    def price_currency(self):
+        return "USD"
