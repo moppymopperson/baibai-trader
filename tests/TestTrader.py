@@ -16,16 +16,16 @@ class TestTrader(TestCase):
                              update_interval=42)
 
     def test_is_running_starts_false(self):
-        assert self.trader.is_running == False
+        assert self.trader.is_running is False
 
     def test_update_interval_gets_set(self):
         assert self.trader.update_interval == 42
 
     def test_thread_starts_and_stops(self):
         self.trader.begin_trading()
-        assert self.trader.is_running == True
+        assert self.trader.is_running is True
         self.trader.stop_trading()
-        assert self.trader.is_running == False
+        assert self.trader.is_running is False
 
     def test_perform_cyle(self):
         self.trader.perform_one_cycle()

@@ -16,7 +16,11 @@ class Authenticator(ABC):
     @abstractmethod
     def get_current_price(self):
         """
-        Get the present price of the target currency.
+        Get the present price of the target currency. You should throw an
+        exception if unable to get the price. 
+
+        DO NOT return a value if the price can't be retrieved, as that could 
+        result in unintended transactions being triggered.
 
         Returns
         -------
@@ -50,7 +54,7 @@ class Authenticator(ABC):
         n_shares: float
             The number of coins to buy. May be fractional.
         """
-        assert(n_shares > 0, "You can only buy a positive number of shares")
+        assert n_shares > 0, "You can only buy a positive number of shares"
 
     @abstractmethod
     def sell(self, n_shares):
@@ -62,4 +66,4 @@ class Authenticator(ABC):
         n_shares: float
             The number of coins to sell. May be fractional.
         """
-        assert(n_shares > 0, "You can only sell a positive number of shares")
+        assert n_shares > 0, "You can only sell a positive number of shares"
