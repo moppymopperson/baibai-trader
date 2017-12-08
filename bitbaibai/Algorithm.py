@@ -26,7 +26,7 @@ class Algorithm(ABC):
         price_samples: array of PriceSample
             An array of `PriceSample` data points
         """
-        assert all(isinstance(item, PriceSample) for item in price_samples),
+        assert all(isinstance(item, PriceSample) for item in price_samples), \
             "Not all items in price_samples were `PriceSample` objects"
 
     @abstractmethod
@@ -61,7 +61,7 @@ class Algorithm(ABC):
         Returns
         -------
         n_shares: float
-            The number of shares to buy. Maybe fractional.
+            The number of shares to buy. May be fractional.
         """
         pass
 
@@ -74,6 +74,6 @@ class Algorithm(ABC):
         Returns
         -------
         n_shares: float
-            The number of shares to sell
+            The number of shares to sell. May be fractional.
         """
         pass
