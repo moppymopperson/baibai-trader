@@ -27,9 +27,15 @@ class Authenticator(ABC):
         price: float
             The current price of the currency. The value returned should be in 
             units of the currency returned by `price_currency()`.
+
+        Raises
+        ------
+        RuntimeError
+            If fetching the current price fails for some reason
         """
         pass
 
+    @abstractmethod
     def get_account_balance(self):
         """
         Check the balance of the currency used for purchasing, typically a fiat 
@@ -39,6 +45,11 @@ class Authenticator(ABC):
         -------
         balance: float
             The current balance of the purchasing account
+
+        Raises
+        ------
+        RuntimeError
+            If fetching fails for some reason
         """
         pass
 
@@ -53,6 +64,11 @@ class Authenticator(ABC):
         -------
         holdings: float
             The number of coins in the 
+
+        Raises
+        ------
+        RuntimeError
+            If fetching fails for some reason
         """
         pass
 
@@ -92,6 +108,11 @@ class Authenticator(ABC):
         ----------
         n_shares: float
             The number of coins to buy. May be fractional.
+
+        Raises
+        ------
+        RuntimeError
+            If purchasing fails for some reason
         """
         assert n_shares > 0, "You can only buy a positive number of shares"
 
@@ -104,5 +125,10 @@ class Authenticator(ABC):
         ----------
         n_shares: float
             The number of coins to sell. May be fractional.
+
+        Raises
+        ------
+        RuntimeError
+            If selling fails for some reason
         """
         assert n_shares > 0, "You can only sell a positive number of shares"
