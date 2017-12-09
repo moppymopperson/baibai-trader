@@ -88,7 +88,7 @@ class KrakenAuthenticator(Authenticator):
 
         # Query the public API
         response = self._api.query_public(
-            'Depth', {'pair': self.get_pair(), 'count': '3'})
+            'Depth', {'pair': self.get_pair(), 'count': '1'})
 
         # Check for errors
         if len(response['error']) is not 0:
@@ -115,7 +115,7 @@ class KrakenAuthenticator(Authenticator):
         RuntimeError
             If fetching fails for some reason
         """
-        pass
+        pass 
 
     def get_holdings(self):
         """
