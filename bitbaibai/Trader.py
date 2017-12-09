@@ -52,12 +52,17 @@ class Trader:
         self.thread = threading.Timer(
             self.update_interval, self.perform_one_cycle)
 
-        self.log = build_logger(
-            'TraderInfo', 'debug_log.log', output_console=output_console)
-        self.trade_log = build_logger(
-            'TradeActivity', 'trade_records.log', output_console=output_console)
-        self.price_log = build_logger(
-            'TradePrice', 'price_log.log', output_console=output_console)
+        self.log = build_logger(self.name + 'Debug',
+                                self.name + '_debug.log',
+                                output_console=output_console)
+
+        self.trade_log = build_logger(self.name + 'Records',
+                                      self.name + '_trade_records.log',
+                                      output_console=output_console)
+
+        self.price_log = build_logger(self.name + 'Prices',
+                                      self.name + '_price_log.log',
+                                      output_console=output_console)
 
     def begin_trading(self):
         """
@@ -85,7 +90,8 @@ class Trader:
         try:
             price = self.authenticator.get_current_price()
             self.log.info('Received price update: %s', price)
-            self.price_log.info('X%sZ%s = %s', self.authenticator.target_currency(),
+            self.price_log.info('X%sZ%s = %s',
+                                self.authenticator.target_currency(),
                                 self.authenticator.price_currency(),
                                 price.price)
 

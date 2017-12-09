@@ -15,11 +15,14 @@ from .mocks import MockKrakenAPI
 class TestPracticeAuthenticator(TestCase):
 
     def setUp(self):
-        self.auth = PracticeAuthenticator(10000.0, 'XBT', 'USD')
+        self.auth = PracticeAuthenticator(10000, 'XBT', 'USD')
         self.auth._api = MockKrakenAPI()
 
     def test_initial_target_balance(self):
         assert self.auth.get_holdings() == 0
+
+    def test_initial_balance_converted_to_float(self):
+        assert isinstance(self.auth.get_account_balance(), float)
 
     def test_initial_account_balance(self):
         assert self.auth.get_account_balance() == 10000.0

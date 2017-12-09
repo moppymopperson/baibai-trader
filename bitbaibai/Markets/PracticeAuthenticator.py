@@ -21,7 +21,7 @@ class PracticeAuthenticator(Authenticator):
         self._target_currency = target_currency
         self._target_balance = 0
         self._account_currency = account_currency
-        self._account_balance = starting_balance
+        self._account_balance = float(starting_balance)
         self._api = krakenex.API()
         self.last_price = None
 

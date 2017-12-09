@@ -12,7 +12,7 @@ from .mocks import MockAlgorithm, MockAuthenticator
 class TestTrader(TestCase):
 
     def setUp(self):
-        self.trader = Trader('TestTrader',
+        self.trader = Trader('unit_tests',
                              MockAuthenticator(),
                              MockAlgorithm(),
                              update_interval=42,
