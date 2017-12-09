@@ -8,7 +8,7 @@ from .Algorithm import Algorithm
 from ..PriceSample import PriceSample
 
 
-class DummyAlgorith(Algorithm):
+class DummyAlgorithm(Algorithm):
     """
     A dummy algorithm that doesn't do anything
     """
@@ -25,7 +25,7 @@ class DummyAlgorith(Algorithm):
         return False
 
     def determine_buy_volume(self):
-        pass
+        pass  # Will never be called
 
     def determine_sell_volume(self):
-        pass
+        pass  # Will never be called
