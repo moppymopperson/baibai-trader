@@ -1,5 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+"""
+Test Kraken Authenticator to make sure that it calls the api as expected. This 
+is especially important since bugs could cost a lot of money
+"""
 from unittest import TestCase
 from nose.tools import raises
 
@@ -7,6 +11,7 @@ from bitbaibai.KrakenAuthenticator import KrakenAuthenticator
 from bitbaibai.PriceSample import PriceSample
 
 from .mocks import MockKrakenAPI
+
 
 class TestKrakenAuthenticator(TestCase):
 
@@ -16,7 +21,7 @@ class TestKrakenAuthenticator(TestCase):
 
     def test_pair(self):
         assert self.auth.get_pair() == 'XXBTZUSD'
-    
+
     def test_price_currency(self):
         assert self.auth.price_currency() == 'USD'
 
@@ -96,6 +101,3 @@ class TestKrakenAuthenticator(TestCase):
     @raises(ValueError)
     def test_cannot_sell_negative(self):
         self.auth.sell(-1)
-
-    
-

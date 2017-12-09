@@ -83,6 +83,9 @@ class KrakenAuthenticator(Authenticator):
         ------
         RuntimeError
             If fetching the current price fails for some reason
+
+        RequestException
+            If there is a networking problem
         """
         super().get_current_price()
 
@@ -114,8 +117,11 @@ class KrakenAuthenticator(Authenticator):
         ------
         RuntimeError
             If fetching fails for some reason
+
+        RequestException
+            If there is a networking problem
         """
-        pass 
+        pass
 
     def get_holdings(self):
         """
@@ -132,6 +138,9 @@ class KrakenAuthenticator(Authenticator):
         ------
         RuntimeError
             If fetching fails for some reason
+
+        RequestException
+            If there is a networking problem
         """
         pass
 
@@ -152,9 +161,12 @@ class KrakenAuthenticator(Authenticator):
 
         ValueError
             If you try to buy <= 0 shares
+
+        RequestException
+            If there is a networking problem
         """
         super().buy(n_shares)
-        # TODO: 
+        # TODO:
 
     def sell(self, n_shares):
         """
@@ -172,6 +184,9 @@ class KrakenAuthenticator(Authenticator):
 
         ValueError
             If you try to sell <= 0 shares
+
+        RequestException
+            If there is a networking problem
         """
         super().sell(n_shares)
         # TODO:

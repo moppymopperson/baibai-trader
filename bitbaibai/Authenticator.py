@@ -14,65 +14,6 @@ class Authenticator(ABC):
     """
 
     @abstractmethod
-    def get_current_price(self):
-        """
-        Get the present price of the target currency. You should throw an
-        exception if unable to get the price. 
-
-        DO NOT return a value if the price can't be retrieved, as that could 
-        result in unintended transactions being triggered.
-
-        Returns
-        -------
-        price: float
-            The current price of the currency. The value returned should be in 
-            units of the currency returned by `price_currency()`.
-
-        Raises
-        ------
-        RuntimeError
-            If fetching the current price fails for some reason
-        """
-        pass
-
-    @abstractmethod
-    def get_account_balance(self):
-        """
-        Check the balance of the currency used for purchasing, typically a fiat 
-        currency like USD or JPY.
-
-        Returns
-        -------
-        balance: float
-            The current balance of the purchasing account
-
-        Raises
-        ------
-        RuntimeError
-            If fetching fails for some reason
-        """
-        pass
-
-    @abstractmethod
-    def get_holdings(self):
-        """
-        Return the amount of target currency currently availble for selling. 
-        The units of the currency (BTC, ETC, etc.) can be checked with the 
-        `target_currency` method.
-
-        Returns
-        -------
-        holdings: float
-            The number of coins in the 
-
-        Raises
-        ------
-        RuntimeError
-            If fetching fails for some reason
-        """
-        pass
-
-    @abstractmethod
     def target_currency(self):
         """
         Get the currency being traded for
@@ -95,6 +36,74 @@ class Authenticator(ABC):
         -------
         currency: string
             A capitalized 3 letter currency code such as USD or JPY
+        """
+        pass
+
+    @abstractmethod
+    def get_current_price(self):
+        """
+        Get the present price of the target currency. You should throw an
+        exception if unable to get the price. 
+
+        DO NOT return a value if the price can't be retrieved, as that could 
+        result in unintended transactions being triggered.
+
+        Returns
+        -------
+        price: float
+            The current price of the currency. The value returned should be in 
+            units of the currency returned by `price_currency()`.
+
+        Raises
+        ------
+        RuntimeError
+            If fetching the current price fails for some reason
+
+        RequestException
+            If there is a networking problem
+        """
+        pass
+
+    @abstractmethod
+    def get_account_balance(self):
+        """
+        Check the balance of the currency used for purchasing, typically a fiat 
+        currency like USD or JPY.
+
+        Returns
+        -------
+        balance: float
+            The current balance of the purchasing account
+
+        Raises
+        ------
+        RuntimeError
+            If fetching fails for some reason
+
+        RequestException
+            If there is a networking problem
+        """
+        pass
+
+    @abstractmethod
+    def get_holdings(self):
+        """
+        Return the amount of target currency currently availble for selling. 
+        The units of the currency (BTC, ETC, etc.) can be checked with the 
+        `target_currency` method.
+
+        Returns
+        -------
+        holdings: float
+            The number of coins in the 
+
+        Raises
+        ------
+        RuntimeError
+            If fetching fails for some reason
+
+        RequestException
+            If there is a networking problem
         """
         pass
 
@@ -134,7 +143,7 @@ class Authenticator(ABC):
         ------
         RuntimeError
             If selling fails for some reason
-        
+
         ValueError
             If you try to sell 0 or fewer shares
         """

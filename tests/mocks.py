@@ -76,31 +76,32 @@ class MockAuthenticator(Authenticator):
         self.n_balance += 1
         return 20000.0
 
+
 class MockKrakenAPI:
 
     n_query_pub = 0
     n_query_private = 0
-    
+
     should_fail = False
 
     def query_private(self, endpoint):
         self.n_query_private += 1
         if self.should_fail:
-             return {'error':['Bad News!']}
+            return {'error': ['Bad News!']}
         else:
-             return {'error':['Bad News!']}
+            return {'error': ['Bad News!']}
 
     def query_public(self, endpoint, json):
         self.n_query_pub += 1
         if self.should_fail:
-            return {'error':['Bad News!']}
+            return {'error': ['Bad News!']}
         else:
-            return {'error':[],
-                    'result':{
-                        'XXBTZUSD':{
-                            'asks':[
-                                [999]
-                                ]
-                            }
+            return {'error': [],
+                    'result': {
+                        'XXBTZUSD': {
+                            'asks': [
+                                [500]
+                            ]
                         }
-                    }
+            }
+            }
