@@ -30,6 +30,32 @@ class Authenticator(ABC):
         """
         pass
 
+    def get_account_balance(self):
+        """
+        Check the balance of the currency used for purchasing, typically a fiat 
+        currency like USD or JPY.
+
+        Returns
+        -------
+        balance: float
+            The current balance of the purchasing account
+        """
+        pass
+
+    @abstractmethod
+    def get_target_currency_balance(self):
+        """
+        Return the amount of target currency currently availble for selling. 
+        The units of the currency (BTC, ETC, etc.) can be checked with the 
+        `target_currency` method.
+
+        Returns
+        -------
+        balance: float
+            The number of coins in the 
+        """
+        pass
+
     @abstractmethod
     def target_currency(self):
         """

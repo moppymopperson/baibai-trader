@@ -65,3 +65,9 @@ class MockAuthenticator(Authenticator):
 
     def target_currency(self):
         return "BTC"
+
+    def get_target_currency_balance(self):
+        return 2.7
+
+    def get_account_balance(self):
+        return 20000.0
