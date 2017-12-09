@@ -75,3 +75,23 @@ class MockAuthenticator(Authenticator):
     def get_account_balance(self):
         self.n_balance += 1
         return 20000.0
+
+class MockKrakenAPI:
+
+    n_pub_query = 0
+    
+    should_fail = False
+
+    def query_public(self, type, json):
+        if self.should_fail:
+            return {'error':['Bad News!']}
+        else:
+            return {'error':[],
+                    'result':{
+                        'XXBTZUSD':{
+                            'asks':[
+                                [999]
+                                ]
+                            }
+                        }
+                    }
