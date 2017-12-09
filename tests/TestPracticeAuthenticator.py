@@ -6,8 +6,8 @@ Tests for the PracticeAuthenticator to make sure it tracks balances properly
 from unittest import TestCase
 from nose.tools import raises
 
-from bitbaibai.PracticeAuthenticator import PracticeAuthenticator
-from bitbaibai.PriceSample import PriceSample
+from bitbaibai import PracticeAuthenticator
+from bitbaibai import PriceSample
 
 from .mocks import MockKrakenAPI
 

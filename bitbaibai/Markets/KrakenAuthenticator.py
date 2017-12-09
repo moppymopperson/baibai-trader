@@ -7,7 +7,7 @@ import datetime
 import krakenex
 
 from .Authenticator import Authenticator
-from .PriceSample import PriceSample
+from ..PriceSample import PriceSample
 
 
 class KrakenAuthenticator(Authenticator):

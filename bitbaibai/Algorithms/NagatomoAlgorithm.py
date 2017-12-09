@@ -24,10 +24,10 @@ class NagatomoAlgorithm(Algorithm):
         super().check_should_sell()
         # TODO:
 
-    def determine_buy_volume(self):
-        super().determine_buy_volume()
+    def determine_buy_volume(self, price, holdings, account_balance):
+        super().determine_buy_volume(price, holdings, account_balance)
         # TODO:
 
-    def determine_sell_volume(self):
-        super().determine_sell_volume()
+    def determine_sell_volume(self, price, holdings, account_balance):
+        super().determine_sell_volume(price, holdings, account_balance)
         # TODO:

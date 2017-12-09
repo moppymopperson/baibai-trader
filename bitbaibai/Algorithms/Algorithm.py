@@ -5,7 +5,7 @@ This file contains an abstract base class (ABC) that serves as an interface for
 any algorithm used to determine when to buy and sell.
 """
 from abc import ABC, abstractmethod
-from .PriceSample import PriceSample
+from ..PriceSample import PriceSample
 
 
 class Algorithm(ABC):
