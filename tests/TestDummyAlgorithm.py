@@ -5,10 +5,7 @@ Test the dummy algorithm to make sure that it won't accidentally spend money
 and to ensure that fulfills the Algorithm interface 
 """
 from unittest import TestCase
-from nose.tools import raises
-
 from bitbaibai import DummyAlgorithm
-from bitbaibai import PriceSample
 
 
 class TestDummyAlgorith(TestCase):

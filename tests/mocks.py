@@ -3,7 +3,8 @@
 """
 This file provides utilities for testing
 """
-from bitbaibai import Algorithm, Authenticator
+import datetime
+from bitbaibai import Algorithm, Authenticator, PriceSample
 
 
 class MockAlgorithm(Algorithm):
@@ -46,7 +47,8 @@ class MockAuthenticator(Authenticator):
     def get_current_price(self):
         if not self.should_fail:
             self.n_checks += 1
-            return 42.0
+            return PriceSample(42.0, datetime.datetime.now(),
+                               self.target_currency(), self.price_currency())
         else:
             raise Exception('')
 

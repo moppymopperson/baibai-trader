@@ -5,7 +5,6 @@ This file contains an dummy algorithm that doesn't do anything. This may be
 useful if you just want to collect data without making any buys or sells.
 """
 from .Algorithm import Algorithm
-from ..PriceSample import PriceSample
 
 
 class DummyAlgorithm(Algorithm):
@@ -24,8 +23,8 @@ class DummyAlgorithm(Algorithm):
     def check_should_sell(self):
         return False
 
-    def determine_buy_volume(self):
+    def determine_buy_volume(self, price, holdings, account_balance):
         pass  # Will never be called
 
-    def determine_sell_volume(self):
+    def determine_sell_volume(self, price, holdings, account_balance):
         pass  # Will never be called

@@ -12,9 +12,11 @@ from .mocks import MockAlgorithm, MockAuthenticator
 class TestTrader(TestCase):
 
     def setUp(self):
-        self.trader = Trader(MockAuthenticator(),
+        self.trader = Trader('TestTrader',
+                             MockAuthenticator(),
                              MockAlgorithm(),
-                             update_interval=42)
+                             update_interval=42,
+                             output_console=False)
 
     def test_is_running_starts_false(self):
         assert self.trader.is_running is False

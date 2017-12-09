@@ -5,10 +5,7 @@ Implementation for an automated trader that operates on a single market and
 currency.
 """
 import threading
-import logging
-logging.basicConfig(filename='trader.log',
-                    format='%(asctime)s %(message)s',
-                    level=logging.DEBUG)
+from .utils import build_logger
 
 
 class Trader:
@@ -19,12 +16,18 @@ class Trader:
     and selling actions are delegated to the authenticator.
     """
 
-    def __init__(self, authenticator, algorithm, update_interval=300.0):
+    def __init__(self, name, authenticator, algorithm,
+                 update_interval=300.0, output_console=True):
         """
         Create a new `Trader` with a specific `Authenticator` and `Algorithm`
 
         Parameters
         ----------
+        name: string or None
+            The name given to the `Trader` will be used to generate logs.
+            Reusing a name will essentially restart a terminated trader by
+            continuing the logs where the previous left off.
+
         authenticator: instance of `Authenticator`
             The authenticator responsible for retrieving market data and place
             buy/sell orders
@@ -36,7 +39,12 @@ class Trader:
         update_interval: float (seconds)
             How frequency the market price is checked and a new decision is 
             made. Units are in seconds. Defaults to 300 seconds (5 minutes).
+
+        output_console: boolean (default True)
+            Determines if logs will be printed to the console in addition to 
+            written to disk. Making this False is nice for unit testing.
         """
+        self.name = name
         self.authenticator = authenticator
         self.algorithm = algorithm
         self.update_interval = float(update_interval)
@@ -44,12 +52,20 @@ class Trader:
         self.thread = threading.Timer(
             self.update_interval, self.perform_one_cycle)
 
+        self.log = build_logger(
+            'TraderInfo', 'debug_log.log', output_console=output_console)
+        self.trade_log = build_logger(
+            'TradeActivity', 'trade_records.log', output_console=output_console)
+        self.price_log = build_logger(
+            'TradePrice', 'price_log.log', output_console=output_console)
+
     def begin_trading(self):
         """
         Begin polling the market and trading
         """
         self.thread.start()
         self.is_running = True
+        self.log.info('Began trading')
 
     def stop_trading(self):
         """
@@ -57,6 +73,7 @@ class Trader:
         """
         self.thread.cancel()
         self.is_running = False
+        self.log.info('Stop trading')
 
     def perform_one_cycle(self):
         """
@@ -67,10 +84,13 @@ class Trader:
         # Checking price
         try:
             price = self.authenticator.get_current_price()
-            logging.info('Received price update: %s', price)
+            self.log.info('Received price update: %s', price)
+            self.price_log.info('X%sZ%s = %s', self.authenticator.target_currency(),
+                                self.authenticator.price_currency(),
+                                price.price)
 
         except Exception as e:
-            logging.error('Failed to get price with error: %s', e)
+            self.log.error('Failed to get price with error: %s', e)
             return
 
         self.algorithm.process_data([price])
@@ -84,10 +104,12 @@ class Trader:
                 price, holdings, balance)
 
             try:
-                logging.debug('Trying to buy %s shares at %s', volume, price)
+                self.log.debug('Trying to buy %s shares at %s', volume, price)
                 self.authenticator.buy(volume)
+                self.trade_log.info('Bought %s shares of %s at %s', volume,
+                                    self.authenticator.target_currency(), price)
             except Exception as e:
-                logging.error('Failed to buy with error: %s', e)
+                self.log.error('Failed to buy with error: %s', e)
 
         # Selling
         elif self.algorithm.check_should_sell():
@@ -98,7 +120,9 @@ class Trader:
                 price, holdings, balance)
 
             try:
-                logging.debug('Trying to sell %s shares at %s', volume, price)
+                self.log.debug('Trying to sell %s shares at %s', volume, price)
                 self.authenticator.sell(volume)
+                self.trade_log.info('Sold %s shares of %s at %s', volume,
+                                    self.authenticator.target_currency(), price)
             except Exception as e:
-                logging.error('Failed to sell with error: %s', e)
+                self.log.error('Failed to sell with error: %s', e)
