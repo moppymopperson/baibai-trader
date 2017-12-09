@@ -49,8 +49,7 @@ class Trader:
         self.algorithm = algorithm
         self.update_interval = float(update_interval)
         self.is_running = False
-        self.thread = threading.Timer(
-            self.update_interval, self.perform_one_cycle)
+        self._thread = None
 
         self.log = build_logger(self.name + 'Debug',
                                 self.name + '_debug.log',
@@ -68,7 +67,7 @@ class Trader:
         """
         Begin polling the market and trading
         """
-        self.thread.start()
+        self._continue_trading()
         self.is_running = True
         self.log.info('Began trading')
 
@@ -80,6 +79,15 @@ class Trader:
         self.is_running = False
         self.log.info('Stop trading')
 
+    def _continue_trading(self):
+        """
+        Recursively trigger more cycles of trading
+        """
+        self.perform_one_cycle()
+        self.thread = threading.Timer(self.update_interval,
+                                      self._continue_trading)
+        self.thread.start()
+
     def perform_one_cycle(self):
         """
         Get the market price, provide the data to the algorithm, make a decision
@@ -90,7 +98,7 @@ class Trader:
         try:
             price = self.authenticator.get_current_price()
             self.log.info('Received price update: %s', price)
-            self.price_log.info('X%sZ%s = %s',
+            self.price_log.info('%s %s = %s',
                                 self.authenticator.target_currency(),
                                 self.authenticator.price_currency(),
                                 price.price)
