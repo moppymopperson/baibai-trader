@@ -149,8 +149,12 @@ class KrakenAuthenticator(Authenticator):
         ------
         RuntimeError
             If purchasing fails for some reason
+
+        ValueError
+            If you try to buy <= 0 shares
         """
-        pass
+        super().buy(n_shares)
+        # TODO: 
 
     def sell(self, n_shares):
         """
@@ -165,5 +169,9 @@ class KrakenAuthenticator(Authenticator):
         ------
         RuntimeError
             If selling fails for some reason
+
+        ValueError
+            If you try to sell <= 0 shares
         """
-        pass
+        super().sell(n_shares)
+        # TODO:

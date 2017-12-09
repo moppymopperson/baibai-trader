@@ -113,8 +113,12 @@ class Authenticator(ABC):
         ------
         RuntimeError
             If purchasing fails for some reason
+
+        ValueError
+            If you try to buy 0 or fewer shares
         """
-        assert n_shares > 0, "You can only buy a positive number of shares"
+        if n_shares <= 0:
+            raise ValueError("You can only buy a positive number of shares")
 
     @abstractmethod
     def sell(self, n_shares):
@@ -130,5 +134,9 @@ class Authenticator(ABC):
         ------
         RuntimeError
             If selling fails for some reason
+        
+        ValueError
+            If you try to sell 0 or fewer shares
         """
-        assert n_shares > 0, "You can only sell a positive number of shares"
+        if n_shares <= 0:
+            raise ValueError("You can only sell a positive number of shares")
