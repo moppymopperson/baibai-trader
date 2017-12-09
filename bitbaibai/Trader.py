@@ -41,13 +41,13 @@ class Trader:
         self.algorithm = algorithm
         self.update_interval = float(update_interval)
         self.is_running = False
+        self.thread = threading.Timer(
+            self.update_interval, self.perform_one_cycle)
 
     def begin_trading(self):
         """
         Begin polling the market and trading
         """
-        self.thread = threading.Timer(
-            self.update_interval, self.perform_one_cycle)
         self.thread.start()
         self.is_running = True
 
@@ -68,6 +68,7 @@ class Trader:
         try:
             price = self.authenticator.get_current_price()
             logging.info('Received price update: %s', price)
+
         except Exception as e:
             logging.error('Failed to get price with error: %s', e)
             return
@@ -76,7 +77,12 @@ class Trader:
 
         # Buying
         if self.algorithm.check_should_buy():
-            volume = self.algorithm.determine_buy_volume()
+
+            balance = self.authenticator.get_account_balance()
+            holdings = self.authenticator.get_holdings()
+            volume = self.algorithm.determine_buy_volume(
+                price, holdings, balance)
+
             try:
                 logging.debug('Trying to buy %s shares at %s', volume, price)
                 self.authenticator.buy(volume)
@@ -84,8 +90,13 @@ class Trader:
                 logging.error('Failed to buy with error: %s', e)
 
         # Selling
-        if self.algorithm.check_should_sell():
-            volume = self.algorithm.determine_sell_volume()
+        elif self.algorithm.check_should_sell():
+
+            balance = self.authenticator.get_account_balance()
+            holdings = self.authenticator.get_holdings()
+            volume = self.algorithm.determine_sell_volume(
+                price, holdings, balance)
+
             try:
                 logging.debug('Trying to sell %s shares at %s', volume, price)
                 self.authenticator.sell(volume)

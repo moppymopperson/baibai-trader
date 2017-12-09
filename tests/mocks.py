@@ -26,11 +26,11 @@ class MockAlgorithm(Algorithm):
         self.n_check_sell += 1
         return self.should_sell
 
-    def determine_buy_volume(self):
+    def determine_buy_volume(self, price, holdings, account_balance):
         self.n_buy_volume += 1
         return 50.0
 
-    def determine_sell_volume(self):
+    def determine_sell_volume(self, price, holdings, account_balance):
         self.n_sell_volume += 1
         return 25.0
 
@@ -39,6 +39,8 @@ class MockAuthenticator(Authenticator):
     n_checks = 0
     n_buys = 0
     n_sells = 0
+    n_holdings = 0
+    n_balance = 0
     should_fail = False
 
     def get_current_price(self):
@@ -46,19 +48,19 @@ class MockAuthenticator(Authenticator):
             self.n_checks += 1
             return 42.0
         else:
-            raise Exception()
+            raise Exception('')
 
     def buy(self, n_shares):
         if not self.should_fail:
             self.n_buys += n_shares
         else:
-            raise Exception()
+            raise Exception('')
 
     def sell(self, n_shares):
         if not self.should_fail:
             self.n_sells += n_shares
         else:
-            raise Exception()
+            raise Exception('')
 
     def price_currency(self):
         return "USD"
@@ -66,8 +68,10 @@ class MockAuthenticator(Authenticator):
     def target_currency(self):
         return "BTC"
 
-    def get_target_currency_balance(self):
+    def get_holdings(self):
+        self.n_holdings += 1
         return 2.7
 
     def get_account_balance(self):
+        self.n_balance += 1
         return 20000.0

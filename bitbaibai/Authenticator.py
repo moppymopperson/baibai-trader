@@ -43,7 +43,7 @@ class Authenticator(ABC):
         pass
 
     @abstractmethod
-    def get_target_currency_balance(self):
+    def get_holdings(self):
         """
         Return the amount of target currency currently availble for selling. 
         The units of the currency (BTC, ETC, etc.) can be checked with the 
@@ -51,7 +51,7 @@ class Authenticator(ABC):
 
         Returns
         -------
-        balance: float
+        holdings: float
             The number of coins in the 
         """
         pass

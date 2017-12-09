@@ -43,21 +43,27 @@ class TestTrader(TestCase):
         assert self.trader.algorithm.n_sell_volume == 0
         assert self.trader.authenticator.n_buys == 0
         assert self.trader.authenticator.n_sells == 0
+        assert self.trader.authenticator.n_balance == 0
+        assert self.trader.authenticator.n_holdings == 0
 
     def test_buy_transation(self):
         self.trader.algorithm.should_buy = True
         self.trader.perform_one_cycle()
         assert self.trader.algorithm.n_check_buy == 1
         assert self.trader.algorithm.n_buy_volume == 1
+        assert self.trader.authenticator.n_balance == 1
+        assert self.trader.authenticator.n_holdings == 1
         assert self.trader.authenticator.n_sells == 0
         assert self.trader.authenticator.n_buys == \
-            self.trader.algorithm.determine_buy_volume()
+            self.trader.algorithm.determine_buy_volume(0, 0, 0)
 
     def test_sell_transaction(self):
         self.trader.algorithm.should_sell = True
         self.trader.perform_one_cycle()
         assert self.trader.algorithm.n_check_sell == 1
         assert self.trader.algorithm.n_sell_volume == 1
+        assert self.trader.authenticator.n_balance == 1
+        assert self.trader.authenticator.n_holdings == 1
         assert self.trader.authenticator.n_buys == 0
         assert self.trader.authenticator.n_sells == \
-            self.trader.algorithm.determine_sell_volume()
+            self.trader.algorithm.determine_sell_volume(0, 0, 0)

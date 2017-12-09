@@ -53,10 +53,21 @@ class Algorithm(ABC):
         """
 
     @abstractmethod
-    def determine_buy_volume(self):
+    def determine_buy_volume(self, price, holdings, account_balance):
         """
         This method will be automatically called when it is time to buy. Based
         on the data available, return the number of shares to buy.
+
+        Parameters
+        ----------
+        price: PriceSample
+            Info about the going price of the traded asset
+
+        holdings: float
+            The number of shares currently owned
+
+        account_balance: float
+            The amount of currency availble to use for purchasing
 
         Returns
         -------
@@ -66,10 +77,21 @@ class Algorithm(ABC):
         pass
 
     @abstractmethod
-    def determine_sell_volume(self):
+    def determine_sell_volume(self, price, holdings, account_balance):
         """
         This method will be automatically called when it is time to sell. Based
         on the data available, return the number of shares to sell.
+
+        Parameters
+        ----------
+        price: PriceSample
+            Info about the cost of the asset
+
+        holdings: float
+            The number of shares currently owned
+
+        account_balance: float
+            The balance currently available in the account
 
         Returns
         -------
