@@ -31,6 +31,19 @@ class Authenticator(ABC):
         pass
 
     @abstractmethod
+    def target_currency(self):
+        """
+        Get the currency being traded for
+
+        Returns
+        -------
+        ticker_symbol: string
+            The ticker symbol for the currency being traded, i.e. BTC for
+            Bitcoin or ETC for Etherium.
+        """
+        pass
+
+    @abstractmethod
     def price_currency(self):
         """
         Specify the currency that price will be returned in. For example, when

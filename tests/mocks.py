@@ -62,3 +62,6 @@ class MockAuthenticator(Authenticator):
 
     def price_currency(self):
         return "USD"
+
+    def target_currency(self):
+        return "BTC"
