@@ -17,7 +17,7 @@ def build_logger(identifier, filename, level=logging.INFO, output_console=True):
         os.mkdir(log_folder)
 
     l = logging.getLogger(identifier)
-    formatter = logging.Formatter('%(asctime)s : %(message)s')
+    formatter = logging.Formatter('%(asctime)s : %(message)s', "%Y-%m-%d %H:%M:%S")
     fileHandler = logging.FileHandler(log_folder + '/' + filename, mode='a')
     fileHandler.setFormatter(formatter)
 
