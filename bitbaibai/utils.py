@@ -7,6 +7,9 @@ import os
 import logging
 from file_read_backwards import FileReadBackwards
 from dateutil.parser import parse
+from datetime import datetime
+
+from .PriceSample import PriceSample
 
 
 def build_logger(identifier, filename, level=logging.INFO, output_console=True):
@@ -33,25 +36,27 @@ def build_logger(identifier, filename, level=logging.INFO, output_console=True):
     return l
 
 def parse_price_sample(line):
-    words = line.split(“ “)
-    date = parse(words[0] + words[1]
+    words = line.split(' ')
+    date = parse(words[0] + ' ' + words[1])
     currency = words[3]
     price_currency = words[4]
-    price = float(words[5])
+    price = float(words[6])
     return PriceSample(price, date, currency, price_currency)
 
-def read_price_samples(log_file, after_date_=None, max_samples=None):
+def read_price_history(log_file, after_date=None, max_samples=None):
     if max_samples is not None and max_samples < 0:
-        raise ValueError(“max_samples must be >= 0”)
-    
+        raise ValueError('max_samples must be >= 0')
+
+    if after_date is not None and not isinstance(after_date, datetime):
+        raise TypeError('after_date must be a datetime object')
+        
     samples = []
-    with FileReadBackwards("log_files/DummyTrader_debug.log", encoding="utf-8") as frb:
-        for l in frb:
+    with FileReadBackwards(log_file, encoding="utf-8") as frb:
+        for line in frb:
             sample = parse_price_sample(line)
-            if after_date is not None and sample.date < after_date:
+            if after_date is not None and sample.timestamp < after_date:
                 return samples
             samples.append(sample)
             if max_samples is not None and len(samples) >= max_samples:
                 return samples
-
     return samples
