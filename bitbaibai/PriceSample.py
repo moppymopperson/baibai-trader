@@ -15,7 +15,7 @@ Parameters
     price: float
         The cost of the currency in units of `price_currency`
         
-    timestamp: datetime
+    date: datetime
         The time at which this data point was recorded
         
     currency: string
@@ -25,4 +25,4 @@ Parameters
         The symbol for currency the price is given in, e.g. USD or JPY 
 """
 PriceSample = namedtuple(
-    "PriceSample", "price timestamp currency price_currency")
+    "PriceSample", "price date currency price_currency")

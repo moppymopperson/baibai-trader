@@ -15,7 +15,7 @@ from .PriceSample import PriceSample
 def build_logger(identifier, filename, level=logging.INFO, output_console=True):
     """
     Gets (or creates if nonexistent) a file logger that also logs out to the
-    stdout and stderror. Log entries will be timestamped as well.
+    stdout and stderror. Log entries will be dateed as well.
     """
     log_folder = 'log_files'
     if not os.path.exists(log_folder):
@@ -54,7 +54,7 @@ def read_price_history(log_file, after_date=None, max_samples=None):
     with FileReadBackwards(log_file, encoding="utf-8") as frb:
         for line in frb:
             sample = parse_price_sample(line)
-            if after_date is not None and sample.timestamp < after_date:
+            if after_date is not None and sample.date < after_date:
                 return samples
             samples.append(sample)
             if max_samples is not None and len(samples) >= max_samples:

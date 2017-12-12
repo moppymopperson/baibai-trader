@@ -17,7 +17,7 @@ class TestLogUtils(TestCase):
 
     def test_parse_sample_date(self):
         price = parse_price_sample(line)
-        assert price.timestamp == datetime(2017, 12, 11, 13, 0, 46)
+        assert price.date == datetime(2017, 12, 11, 13, 0, 46)
 
     def test_parse_sample_cutrency(self):
         price = parse_price_sample(line)
