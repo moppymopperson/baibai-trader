@@ -4,7 +4,7 @@ from unittest import TestCase
 from datetime import datetime
 from nose.tools import raises
 
-from bitbaibai.utils import read_price_history, parse_price_sample
+from bitbaibai.utils import read_days_of_price_history, read_price_history, parse_price_sample
 
 class TestLogUtils(TestCase):
 
@@ -57,6 +57,10 @@ class TestLogUtils(TestCase):
         max_number = 8
         prices = read_price_history(test_log, after, max_number)
         assert len(prices) == 4
+
+    def test_read_days_price_history(self):
+        test_log = 'tests/test_log.log'
+        prices = read
 
     @raises(ValueError)
     def test_no_neg_values(self):

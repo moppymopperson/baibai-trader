@@ -60,3 +60,8 @@ def read_price_history(log_file, after_date=None, max_samples=None):
             if max_samples is not None and len(samples) >= max_samples:
                 return samples
     return samples
+
+def read_days_of_price_history(log_file, days, starting_from=datetime.now()):
+    delta = datetime.timedelta(days=days)
+    then = starting_from - delta
+    return read_price_history(log_file, after_date=then)
