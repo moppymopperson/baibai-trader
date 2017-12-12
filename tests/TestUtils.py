@@ -60,7 +60,10 @@ class TestLogUtils(TestCase):
 
     def test_read_days_price_history(self):
         test_log = 'tests/test_log.log'
-        prices = read
+        starting = datetime(2017, 12, 13, 12, 57)
+        prices = read_days_of_price_history(test_log, 2, starting_from=starting)
+        print([price.price for price in prices])
+        assert len(prices) == 4
 
     @raises(ValueError)
     def test_no_neg_values(self):

@@ -7,7 +7,7 @@ import os
 import logging
 from file_read_backwards import FileReadBackwards
 from dateutil.parser import parse
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from .PriceSample import PriceSample
 
@@ -62,6 +62,6 @@ def read_price_history(log_file, after_date=None, max_samples=None):
     return samples
 
 def read_days_of_price_history(log_file, days, starting_from=datetime.now()):
-    delta = datetime.timedelta(days=days)
+    delta = timedelta(days=days)
     then = starting_from - delta
     return read_price_history(log_file, after_date=then)
