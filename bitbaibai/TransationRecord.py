@@ -32,4 +32,5 @@ price_currency: string
     The currency the price is given in. Typically USD or JPY, but could be
     another crypto currency as well, such as when buying Bitcoin with Etherium.
 """
-TransationRecord = namedtuple('TransactionRecord', 'type date currency price shares total price_currency')
+fields = 'type date currency price shares total price_currency'
+TransationRecord = namedtuple('TransactionRecord', fields)

@@ -4,10 +4,12 @@ from unittest import TestCase
 from datetime import datetime
 from nose.tools import raises
 
-from bitbaibai.utils import read_days_of_price_history, read_price_history, parse_price_sample
+from bitbaibai.utils import read_days_of_price_history, read_price_history
+from bitbaibai.utils import parse_price_sample
 
 test_log = 'tests/test_log.log'
 line = '2017-12-11 13:00:46 : XBT USD = 16200.00000'
+
 
 class TestLogUtils(TestCase):
 
@@ -54,7 +56,8 @@ class TestLogUtils(TestCase):
 
     def test_read_days_price_history(self):
         starting = datetime(2017, 12, 13, 12, 57)
-        prices = read_days_of_price_history(test_log, 2, starting_from=starting)
+        prices = read_days_of_price_history(
+            test_log, 2, starting_from=starting)
         print([price.price for price in prices])
         assert len(prices) == 4
 
@@ -66,7 +69,3 @@ class TestLogUtils(TestCase):
     @raises(TypeError)
     def test_date_type(self):
         read_price_history(test_log, 5)
-
-
-
-    
