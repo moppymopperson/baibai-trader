@@ -1,4 +1,5 @@
 from .PriceSample import PriceSample
+from .TransationRecord import TransationRecord
 
 from .Algorithms.Algorithm import Algorithm
 from .Algorithms.DummyAlgorithm import DummyAlgorithm
