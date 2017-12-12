@@ -54,13 +54,13 @@ class MockAuthenticator(Authenticator):
 
     def buy(self, n_shares):
         if not self.should_fail:
-            self.n_buys += n_shares
+            self.n_buys += 1 
         else:
             raise Exception('')
 
     def sell(self, n_shares):
         if not self.should_fail:
-            self.n_sells += n_shares
+            self.n_sells += 1
         else:
             raise Exception('')
 
