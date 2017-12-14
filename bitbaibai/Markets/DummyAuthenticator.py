@@ -3,11 +3,10 @@
 """
 A dummy market and server that always returns the same price
 """
-import os
-import json
-import requests
 from datetime import datetime
 from http.server import BaseHTTPRequestHandler, HTTPServer
+import os
+import requests
 
 from .Authenticator import Authenticator
 from ..PriceSample import PriceSample
