@@ -24,5 +24,4 @@ Parameters
     price_currency: string
         The symbol for currency the price is given in, e.g. USD or JPY 
 """
-PriceSample = namedtuple(
-    "PriceSample", "price date currency price_currency")
+PriceSample = namedtuple("PriceSample", "price date currency price_currency")
