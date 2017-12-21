@@ -4,13 +4,9 @@
 Where the action happens
 """
 import time
-from bitbaibai import Trader, DummyAlgorithm, PracticeAuthenticator, DummyAuthenticator
+from bitbaibai import Trader, DummyAlgorithm, PracticeAuthenticator, TickerServer
 
-# auth = PracticeAuthenticator(1000, 'XBT', 'USD')
-auth = DummyAuthenticator()
-auth.start_server()
-
-time.sleep(1)
+auth = PracticeAuthenticator(1000, 'XBT', 'USD')
 algorithm = DummyAlgorithm()
 
 trader = Trader('DummyTrader', auth, algorithm, update_interval=60.0)
