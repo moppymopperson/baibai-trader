@@ -11,4 +11,4 @@ from .Markets.PracticeAuthenticator import PracticeAuthenticator
 from .Markets.DummyAuthenticator import DummyAuthenticator
 
 from .Trader import Trader
-from .TickerServer import TickerServer
+#from .TickerServer import TickerServer
