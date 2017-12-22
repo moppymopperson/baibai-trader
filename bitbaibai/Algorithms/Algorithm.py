@@ -51,6 +51,7 @@ class Algorithm(ABC):
         should_sell: boolean
             True if we should sell, False otherwise
         """
+        pass
 
     @abstractmethod
     def determine_buy_volume(self, price, holdings, account_balance):
@@ -74,7 +75,7 @@ class Algorithm(ABC):
         n_shares: float
             The number of shares to buy. May be fractional.
         """
-        pass
+        assert isinstance(price, PriceSample)
 
     @abstractmethod
     def determine_sell_volume(self, price, holdings, account_balance):
@@ -98,4 +99,4 @@ class Algorithm(ABC):
         n_shares: float
             The number of shares to sell. May be fractional.
         """
-        pass
+        assert isinstance(price, PriceSample)

@@ -52,6 +52,10 @@ class TestErikAlgorithm(TestCase):
         alg = ErikAlgorithm(5, 6, 4.0, min_days_of_data=4)
         assert alg.min_days_of_data == 4
 
+    def test_sets_recent_days(self):
+        alg = ErikAlgorithm(5, 6, 4.0, recent_days=6)
+        assert alg.recent_days == timedelta(days=6)
+
     def test_converts_min_smaples_to_int(self):
         alg = ErikAlgorithm(5, 6, 4.0, min_samples=10.5)
         assert alg.min_samples == 10
@@ -170,12 +174,32 @@ class TestErikAlgorithm(TestCase):
         assert self.alg.check_should_sell() == True
 
     def test_set_last_buy_on_buy(self):
-        self.alg.determine_buy_volume(20, 5, 1000)
+        self.alg.determine_buy_volume(self.sample_price(), 5, 1000)
         assert self.alg.last_buy is not None
 
     def test_set_last_sell_on_sell(self):
-        self.alg.determine_sell_volume(20, 5, 1000)
+        self.alg.determine_sell_volume(self.sample_price(), 5, 1000)
         assert self.alg.last_sell is not None
+
+    def test_determine_buy_volume(self):
+        price = self.sample_price(500)
+        self.alg.buy_volume = 100
+        assert self.alg.determine_buy_volume(price, 5, 1000) == 0.2
+
+    def test_buy_volume_zero_if_insufficient_funds(self):
+        price = self.sample_price(500)
+        self.alg.buy_volume = 100
+        assert self.alg.determine_buy_volume(price, 5, 50) == 0
+
+    def test_determine_sell_volume(self):
+        price = self.sample_price(500)
+        self.alg.sell_volume = 50
+        assert self.alg.determine_sell_volume(price, 5, 1000) == 0.1
+
+    def test_sell_volume_zero_if_insufficient_holdings(self):
+        price = self.sample_price(500)
+        self.alg.sell_volume = 50
+        assert self.alg.determine_sell_volume(price, 0.05, 1000) == 0
 
     def test_no_outliers(self):
         self.alg.data = self.sample_data(1000, 1, 100)

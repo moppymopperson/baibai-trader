@@ -15,7 +15,7 @@ from ..TransationRecord import TransationRecord
 class ErikAlgorithm(Algorithm):
 
     def __init__(self, buy_volume, sell_volume, sigma=3, min_samples=500,
-                 min_days_of_data=3, min_hours_between_trades=3):
+                 min_days_of_data=3, min_hours_between_trades=3, recent_days=3):
         """
         Parameters
         ----------
@@ -53,9 +53,13 @@ class ErikAlgorithm(Algorithm):
         min_hours_betwee_trades: number
             This value is used to prevent rapid successive buys or sells when
             the price continually meets the buy/sell criterion.
+
+        recent_days: number
+            The number of days that are considered recent when using methods
+            as `recent_prices`, `recent_mean`, and `recent_stddev`.
         """
         self.sigma = float(sigma)
-        self.comparison_window = timedelta(days=2)
+        self.recent_days = timedelta(days=recent_days)
         self.data = []
         self.buy_volume = float(buy_volume) 
         self.sell_volume = float(sell_volume) 
@@ -94,16 +98,23 @@ class ErikAlgorithm(Algorithm):
         return True
 
     def determine_buy_volume(self, price, holdings, account_balance):
-        volume = price / self.buy_volume
+        super().determine_buy_volume(price, holdings, account_balance)
+        if self.buy_volume > account_balance:
+            return 0
+
+        volume = self.buy_volume / price.price
         trans = TransationRecord(
-            'buy', datetime.now(), 'XBT', price, volume, price * volume, 'JPY')
+            'buy', price, 'XBT', price.price, volume, price.price * volume, 'JPY')
         self.last_buy = trans
         return volume
 
     def determine_sell_volume(self, price, holdings, account_balance):
-        volume = price / self.sell_volume
+        super().determine_sell_volume(price, holdings, account_balance)
+        if self.sell_volume > holdings * price.price:
+            return False
+        volume = self.sell_volume / price.price
         trans = TransationRecord(
-            'sell', datetime.now(), 'XBT', price, volume, price * volume, 'JPY')
+            'sell', datetime.now(), 'XBT', price.price, volume, price.price * volume, 'JPY')
         self.last_sell = trans
         return volume
 
@@ -127,7 +138,7 @@ class ErikAlgorithm(Algorithm):
             return transaction.date < datetime.now() - min_wait
 
     def recent_prices(self):
-        min_date = datetime.now() - self.comparison_window
+        min_date = datetime.now() - self.recent_days
         return [sample for sample in self.data if sample.date > min_date]
 
     def recent_mean(self):
