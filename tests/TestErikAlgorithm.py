@@ -9,7 +9,7 @@ from bitbaibai import ErikAlgorithm, PriceSample, TransationRecord
 class TestErikAlgorithm(TestCase):
 
     def setUp(self):
-        self.alg = ErikAlgorithm(3.0)
+        self.alg = ErikAlgorithm(1, 1, 3.0)
 
     def sample_price(self, price=15.0, date=datetime.now()):
         return PriceSample(price, date, 'XBT', 'USD')
@@ -27,8 +27,34 @@ class TestErikAlgorithm(TestCase):
         return data
 
     def test_sets_sigma(self):
-        alg = ErikAlgorithm(4.0)
+        alg = ErikAlgorithm(5, 5, 4.0)
         assert alg.sigma == 4.0
+
+    def test_sets_sigma_to_float(self):
+        alg = ErikAlgorithm(5, 5, 4.0)
+        assert isinstance(alg.sigma, float)
+
+    def test_sets_buy_sell_volume(self):
+        alg = ErikAlgorithm(5, 6, 4.0)
+        assert alg.buy_volume == 5
+        assert alg.sell_volume == 6
+
+    def test_sets_volumes_to_floats(self):
+        alg = ErikAlgorithm(int(2), int(4), 4.0)
+        assert isinstance(alg.buy_volume, float)
+        assert isinstance(alg.sell_volume, float)
+    
+    def test_sets_min_samples(self):
+        alg = ErikAlgorithm(5, 6, 4.0, min_samples=100)
+        assert alg.min_samples == 100
+
+    def test_sets_min_days(self):
+        alg = ErikAlgorithm(5, 6, 4.0, min_days_of_data=4)
+        assert alg.min_days_of_data == 4
+
+    def test_converts_min_smaples_to_int(self):
+        alg = ErikAlgorithm(5, 6, 4.0, min_samples=10.5)
+        assert alg.min_samples == 10
 
     def test_last_buy_sell_start_none(self):
         assert self.alg.last_buy is None
@@ -83,13 +109,22 @@ class TestErikAlgorithm(TestCase):
         self.alg.last_buy = None
         self.alg.data = self.sample_data(1000, 1, 300)
         self.alg.data.insert(0, PriceSample(9999, datetime.now(), 'XBT', 'JPY'))
-        #assert self.alg.check_should_buy() == False
+        assert self.alg.check_should_buy() == False
+
+    def test_dont_but_still_falling(self):
+        self.alg.last_buy = None
+        self.alg.data = self.sample_data(1000, 1, 300)
+        self.alg.data.insert(0, PriceSample(100, datetime.now(), 'XBT', 'JPY'))
+        assert self.alg.check_should_buy() == False
 
     def test_do_buy_conditions(self):
         self.alg.last_buy = None
         self.alg.data = self.sample_data(1000, 1, 300)
+        self.alg.data.insert(0, PriceSample(0.2, datetime.now(), 'XBT', 'JPY'))
         self.alg.data.insert(0, PriceSample(0.1, datetime.now(), 'XBT', 'JPY'))
-        assert self.alg.check_should_buy() is True
+        self.alg.data.insert(0, PriceSample(0.2, datetime.now(), 'XBT', 'JPY'))
+        self.alg.data.insert(0, PriceSample(0.3, datetime.now(), 'XBT', 'JPY'))
+        assert self.alg.check_should_buy() == True
 
     def test_dont_sell_data_too_new(self):
         date = datetime.now() - timedelta(days=2)
@@ -117,7 +152,22 @@ class TestErikAlgorithm(TestCase):
     def test_dont_sell_not_outlier(self):
         self.alg.last_buy = None
         self.alg.data = self.sample_data(1000, 1, 300)
-        #assert self.alg.check_should_sell() == False
+        assert self.alg.check_should_sell() == False
+
+    def test_dont_sell_still_rising(self):
+        self.alg.last_buy = None
+        self.alg.data = self.sample_data(1000, 1, 300)
+        self.alg.data.insert(0, PriceSample(1010, datetime.now(), 'XBT', 'JPY'))
+        assert self.alg.check_should_sell() == False
+
+    def test_do_sell_conditions(self):
+        self.alg.last_buy = None
+        self.alg.data = self.sample_data(1000, 1, 300)
+        self.alg.data.insert(0, PriceSample(500, datetime.now(), 'XBT', 'JPY'))
+        self.alg.data.insert(0, PriceSample(510, datetime.now(), 'XBT', 'JPY'))
+        self.alg.data.insert(0, PriceSample(500, datetime.now(), 'XBT', 'JPY'))
+        self.alg.data.insert(0, PriceSample(490, datetime.now(), 'XBT', 'JPY'))
+        assert self.alg.check_should_sell() == True
 
     def test_set_last_buy_on_buy(self):
         self.alg.determine_buy_volume(20, 5, 1000)
@@ -204,3 +254,23 @@ class TestErikAlgorithm(TestCase):
     def test_last_price(self):
         self.alg.data = self.sample_data(10, 5, 10)
         assert self.alg.last_price() == self.alg.data[0].price
+
+    def test_price_is_high(self):
+        self.alg.data = self.sample_data(100, 5, 100)
+        self.alg.data.insert(0, self.sample_price(200))
+        assert self.alg.price_is_high() == True
+
+    def test_price_is_not_high(self):
+        self.alg.data = self.sample_data(100, 5, 100)
+        self.alg.data.insert(0, self.sample_price(20))
+        assert self.alg.price_is_high() == False
+
+    def test_price_is_low(self):
+        self.alg.data = self.sample_data(100, 5, 100)
+        self.alg.data.insert(0, self.sample_price(20))
+        assert self.alg.price_is_low() == True
+
+    def test_price_is_not_low(self):
+        self.alg.data = self.sample_data(100, 5, 100)
+        self.alg.data.insert(0, self.sample_price(200))
+        assert self.alg.price_is_low() == False

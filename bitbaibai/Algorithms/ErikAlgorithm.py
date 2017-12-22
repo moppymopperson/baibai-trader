@@ -14,10 +14,54 @@ from ..TransationRecord import TransationRecord
 
 class ErikAlgorithm(Algorithm):
 
-    def __init__(self, sigma):
-        self.sigma = sigma
+    def __init__(self, buy_volume, sell_volume, sigma=3, min_samples=500,
+                 min_days_of_data=3, min_hours_between_trades=3):
+        """
+        Parameters
+        ----------
+
+        buy_volume:
+            The amount to of money to spend on each purchase. The units are of
+            the currency being used to make the purchase, not of the currency
+            being purchased. For example, if `buy_volume` is set to 100 and the
+            pair is XBT/USD, then $100 of bitcoin will be bought on each buy.
+
+        sell_volume:
+            The amount value of the asset to the sold on each sale The units are
+            of the currency being used to make the purchase, not of the currency
+            being sold. For example, if `sell_volume` is set to 100 and the pair
+            is XBT/USD, then $100 worth of bitcoin will be sold on each sale.
+
+        sigma: float
+            Used to set a threshold for determing outliers. Nothing will be
+            bought or sold unless the price is more than sigma times times the
+            standard deviation greater or less than the mean
+
+        min_samples: int
+            The minimum of price samples to collect before starting to run
+            trading logic. If there are too few samples values like the mean and
+            standard deviation won't be meaningful and could lead to unwise buys
+            and sells.
+
+        min_days_of_data: number
+            The minimum number of days of data to collect before beginning to
+            trade. If data is collected at very short intervals, it is possible
+            to excee `min_samples` in a short period of time, but you may wish
+            to wait until more data has been collected first. In that case, use
+            this variable. 
+
+        min_hours_betwee_trades: number
+            This value is used to prevent rapid successive buys or sells when
+            the price continually meets the buy/sell criterion.
+        """
+        self.sigma = float(sigma)
         self.comparison_window = timedelta(days=2)
         self.data = []
+        self.buy_volume = float(buy_volume) 
+        self.sell_volume = float(sell_volume) 
+        self.min_samples = int(min_samples)
+        self.min_days_of_data = min_days_of_data
+        self.min_hours_between_trades = min_hours_between_trades  
         self.last_buy = None
         self.last_sell = None
 
@@ -32,54 +76,51 @@ class ErikAlgorithm(Algorithm):
     def check_should_buy(self):
         super().check_should_buy()
         if not self.check_enough_data() or not self.check_far_enough_in_past(self.last_buy):
-            print("Enough data: " + str(self.check_enough_data()))
-            print("Far enough: " + str(self.check_far_enough_in_past(self.last_buy)))
             return False
-
-        if not self.check_if_last_sample_is_outlier():
-            print("Not an outlier!")
+        if not self.check_if_last_sample_is_outlier() or not self.price_is_low():
             return False
-
-        print("Buying!")
+        if not self.passed_local_min():
+            return False
         return True
 
     def check_should_sell(self):
         super().check_should_sell()
         if not self.check_enough_data() or not self.check_far_enough_in_past(self.last_sell):
             return False
-
-        if not self.check_if_last_sample_is_outlier():
+        if not self.check_if_last_sample_is_outlier() or not self.price_is_high():
             return False
-
+        if not self.passed_local_max():
+            return False
         return True
 
     def determine_buy_volume(self, price, holdings, account_balance):
-        volume = 2
+        volume = price / self.buy_volume
         trans = TransationRecord(
             'buy', datetime.now(), 'XBT', price, volume, price * volume, 'JPY')
         self.last_buy = trans
         return volume
 
     def determine_sell_volume(self, price, holdings, account_balance):
-        volume = 2
+        volume = price / self.sell_volume
         trans = TransationRecord(
             'sell', datetime.now(), 'XBT', price, volume, price * volume, 'JPY')
         self.last_sell = trans
         return volume
 
     # Non interface methods
+
     def last_price(self):
         return self.data[0].price
 
     def check_enough_data(self):
-        three_days_ago = datetime.now() - timedelta(days=3)
+        three_days_ago = datetime.now() - timedelta(days=self.min_days_of_data)
         min_date = self.data[-1].date
         old_enough = min_date < three_days_ago
-        enough = len(self.data) >= 500
+        enough = len(self.data) >= self.min_samples
         return old_enough and enough
 
     def check_far_enough_in_past(self, transaction):
-        min_wait = timedelta(hours=3)
+        min_wait = timedelta(hours=self.min_hours_between_trades)
         if transaction is None:
             return True
         else:
@@ -119,5 +160,12 @@ class ErikAlgorithm(Algorithm):
         mean = prices.mean()
         diff = abs(self.last_price() - mean)
         return diff > stddev * self.sigma
+
+    def price_is_high(self):
+        return self.last_price() > self.recent_mean()
+
+    def price_is_low(self):
+        return self.last_price() < self.recent_mean()
+
 
 
