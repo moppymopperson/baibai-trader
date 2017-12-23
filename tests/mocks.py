@@ -15,6 +15,8 @@ class MockAlgorithm(Algorithm):
     n_sell_volume = 0
     should_buy = False
     should_sell = False
+    buy_volume = 50.0
+    sell_volume = 25.0
 
     def process_data(self, samples):
         self.n_data += len(samples)
@@ -29,11 +31,11 @@ class MockAlgorithm(Algorithm):
 
     def determine_buy_volume(self, price, holdings, account_balance):
         self.n_buy_volume += 1
-        return 50.0
+        return self.buy_volume
 
     def determine_sell_volume(self, price, holdings, account_balance):
         self.n_sell_volume += 1
-        return 25.0
+        return self.sell_volume
 
 
 class MockAuthenticator(Authenticator):

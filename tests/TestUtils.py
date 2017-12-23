@@ -61,6 +61,11 @@ class TestLogUtils(TestCase):
         print([price.price for price in prices])
         assert len(prices) == 4
 
+    def test_newest_sample_at_index_0(self):
+        samples = read_price_history(test_log)
+        for k in range(len(samples) - 1):
+            assert samples[k].date > samples[k+1].date
+
     @raises(ValueError)
     def test_no_neg_values(self):
         max_number = -3
