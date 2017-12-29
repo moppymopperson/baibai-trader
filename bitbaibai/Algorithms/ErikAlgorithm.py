@@ -6,7 +6,6 @@ This file contains an `Algorithm` developed by Erik Hornberger for automatically
 determing when to buy and sell virtual currencies.
 """
 import numpy as np
-import matplotlib.pyplot as plt
 from datetime import datetime, timedelta
 from .Algorithm import Algorithm
 from ..TransationRecord import TransationRecord
@@ -61,11 +60,11 @@ class ErikAlgorithm(Algorithm):
         self.sigma = float(sigma)
         self.recent_days = timedelta(days=recent_days)
         self.data = []
-        self.buy_volume = float(buy_volume) 
-        self.sell_volume = float(sell_volume) 
+        self.buy_volume = float(buy_volume)
+        self.sell_volume = float(sell_volume)
         self.min_samples = int(min_samples)
         self.min_days_of_data = min_days_of_data
-        self.min_hours_between_trades = min_hours_between_trades  
+        self.min_hours_between_trades = min_hours_between_trades
         self.last_buy = None
         self.last_sell = None
 
@@ -166,7 +165,7 @@ class ErikAlgorithm(Algorithm):
         return was_rising and is_falling
 
     def check_if_last_sample_is_outlier(self):
-        prices  = np.array([sample.price for sample in self.data])
+        prices = np.array([sample.price for sample in self.data])
         stddev = prices.std()
         mean = prices.mean()
         diff = abs(self.last_price() - mean)
@@ -177,6 +176,3 @@ class ErikAlgorithm(Algorithm):
 
     def price_is_low(self):
         return self.last_price() < self.recent_mean()
-
-
-

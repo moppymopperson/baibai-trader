@@ -7,17 +7,17 @@ correclty
 import numpy as np
 from datetime import datetime, timedelta
 from unittest import TestCase
-from bitbaibai import AlgorithmTester, PriceSample, TransationRecord
+from bitbaibai import AlgorithmValidator, PriceSample, TransationRecord
 from bitbaibai.utils import read_price_history
 from .mocks import MockAlgorithm
 
 log_file = 'tests/test_log.log'
 
 
-class TestAlgorithmTester(TestCase):
+class TestAlgorithmValidator(TestCase):
 
     def setUp(self):
-        self.tester = AlgorithmTester(log_file, MockAlgorithm(), 5.0, 311.0)
+        self.tester = AlgorithmValidator(log_file, MockAlgorithm(), 5.0, 311.0)
 
     def sample_data(self):
         n = 1000

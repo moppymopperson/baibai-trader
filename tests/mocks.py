@@ -88,14 +88,14 @@ class MockKrakenAPI:
 
     should_fail = False
 
-    def query_private(self, endpoint):
+    def query_private(self, endpoint, timeout):
         self.n_query_private += 1
         if self.should_fail:
             return {'error': ['Bad News!']}
         else:
             return {'error': ['Bad News!']}
 
-    def query_public(self, endpoint, json):
+    def query_public(self, endpoint, json, timeout):
         self.n_query_pub += 1
         if self.should_fail:
             return {'error': ['Bad News!']}

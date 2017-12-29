@@ -12,7 +12,7 @@ from .TransationRecord import TransationRecord
 from .utils import read_price_history
 
 
-class AlgorithmTester:
+class AlgorithmValidator:
 
     def __init__(self, logfile, algorithm, holdings, balance):
         self.logfile = logfile
