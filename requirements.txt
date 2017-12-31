@@ -1,5 +1,0 @@
-krakenex
-dateutil
-file_read_backwards
-numpy
-websocket-server

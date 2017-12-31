@@ -103,7 +103,7 @@ class ErikAlgorithm(Algorithm):
 
         volume = self.buy_volume / price.price
         trans = TransationRecord(
-            'buy', price, 'XBT', price.price, volume, price.price * volume, 'JPY')
+            'buy', price.date, 'XBT', price.price, volume, price.price * volume, 'JPY')
         self.last_buy = trans
         return volume
 
@@ -130,6 +130,9 @@ class ErikAlgorithm(Algorithm):
         return old_enough and enough
 
     def check_far_enough_in_past(self, transaction):
+        if transaction is not None:
+            assert isinstance(transaction, TransationRecord)
+
         min_wait = timedelta(hours=self.min_hours_between_trades)
         if transaction is None:
             return True
