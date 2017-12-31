@@ -4,8 +4,8 @@ from unittest import TestCase
 from datetime import datetime
 from nose.tools import raises
 
-from bitbaibai.utils import read_days_of_price_history, read_price_history
-from bitbaibai.utils import parse_price_sample
+from baibaitrader.utils import read_days_of_price_history, read_price_history
+from baibaitrader.utils import parse_price_sample
 
 test_log = 'tests/test_log.log'
 line = '2017-12-11 13:00:46 : XBT USD = 16200.00000'

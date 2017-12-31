@@ -4,7 +4,7 @@
 Where the action happens
 """
 import time
-from bitbaibai import Trader, ErikAlgorithm, PracticeAuthenticator
+from baibaitrader import Trader, ErikAlgorithm, PracticeAuthenticator
 
 auth = PracticeAuthenticator(10000, 'XBT', 'USD')
 algorithm = ErikAlgorithm(500, 500, min_days_of_data=1)

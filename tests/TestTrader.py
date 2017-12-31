@@ -5,7 +5,7 @@ This file contains unit tests to ensure that `Trader` makes the proper calls to
 its members and that its state is correct following each trade cycle.
 """
 from unittest import TestCase
-from bitbaibai.Trader import Trader
+from baibaitrader.Trader import Trader
 from .mocks import MockAlgorithm, MockAuthenticator
 
 

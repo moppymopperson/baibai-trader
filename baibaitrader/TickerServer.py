@@ -9,7 +9,7 @@ import subprocess
 import select
 import threading
 from websocket_server import WebsocketServer
-from bitbaibai.utils import build_logger
+from baibaitrader.utils import build_logger
 
 
 class TickerServer:

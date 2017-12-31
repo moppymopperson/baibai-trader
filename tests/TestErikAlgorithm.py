@@ -3,7 +3,7 @@
 import numpy as np
 from datetime import datetime, timedelta
 from unittest import TestCase
-from bitbaibai import ErikAlgorithm, PriceSample, TransationRecord
+from baibaitrader import ErikAlgorithm, PriceSample, TransationRecord
 
 
 class TestErikAlgorithm(TestCase):

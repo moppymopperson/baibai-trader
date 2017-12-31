@@ -34,7 +34,7 @@ class DummyAuthenticator(Authenticator):
     def start_server(self):
         # In the new process __name__ == "__main__". See bottom of file.
         print('Starting server at http://localhost:8080')
-        command = 'python -m bitbaibai.Markets.DummyAuthenticator'
+        command = 'python -m baibaitrader.Markets.DummyAuthenticator'
         self.server_process = os.popen(command)
 
     def stop_server(self):

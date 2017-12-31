@@ -3,8 +3,8 @@
 """
 Run an algorithm on past data to validate its operation
 """
-from matplotlib import pyplot
-from bitbaibai import AlgorithmValidator, ErikAlgorithm
+import matplotlib.pyplot as plt
+from baibaitrader import AlgorithmValidator, ErikAlgorithm
 
 # Define the algorithm to test
 buy_volume = 500.0
@@ -22,4 +22,16 @@ validator = AlgorithmValidator(price_log, algorithm, holdings, balance)
 # Run validation and plot the results
 validator.simulate_trading()
 plot_pairs = validator.data_pairs_for_plotting()
-print(plot_pairs)
+
+px = plot_pairs['prices']['dates']
+py = plot_pairs['prices']['values']
+plt.plot(px, py, label='price')
+
+bx = plot_pairs['buys']['dates']
+by = plot_pairs['buys']['values']
+plt.plot(bx, by, 'g*', label='buys')
+
+sx = plot_pairs['sells']['dates']
+sy = plot_pairs['sells']['values']
+plt.plot(sx, sy, 'ro', label='sells')
+plt.show()

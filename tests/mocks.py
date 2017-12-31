@@ -4,7 +4,7 @@
 This file provides utilities for testing
 """
 import datetime
-from bitbaibai import Algorithm, Authenticator, PriceSample
+from baibaitrader import Algorithm, Authenticator, PriceSample
 
 
 class MockAlgorithm(Algorithm):

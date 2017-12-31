@@ -7,8 +7,8 @@ is especially important since bugs could cost a lot of money
 from unittest import TestCase
 from nose.tools import raises
 
-from bitbaibai import KrakenAuthenticator
-from bitbaibai import PriceSample
+from baibaitrader import KrakenAuthenticator
+from baibaitrader import PriceSample
 
 from .mocks import MockKrakenAPI
 

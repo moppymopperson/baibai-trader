@@ -7,8 +7,8 @@ correclty
 import numpy as np
 from datetime import datetime, timedelta
 from unittest import TestCase
-from bitbaibai import AlgorithmValidator, PriceSample, TransationRecord
-from bitbaibai.utils import read_price_history
+from baibaitrader import AlgorithmValidator, PriceSample, TransationRecord
+from baibaitrader.utils import read_price_history
 from .mocks import MockAlgorithm
 
 log_file = 'tests/test_log.log'

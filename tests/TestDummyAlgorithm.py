@@ -5,7 +5,7 @@ Test the dummy algorithm to make sure that it won't accidentally spend money
 and to ensure that fulfills the Algorithm interface 
 """
 from unittest import TestCase
-from bitbaibai import DummyAlgorithm
+from baibaitrader import DummyAlgorithm
 
 
 class TestDummyAlgorith(TestCase):
