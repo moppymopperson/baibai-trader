@@ -74,90 +74,90 @@ class TestAlgorithmValidator(TestCase):
 
     def test_simulating_calls_process_data_once_per_log_line(self):
         num_prices = len(read_price_history(log_file))
-        self.tester.simulate_trading(draw=False)
+        self.tester.simulate_trading()
         assert self.tester.algorithm.n_data == num_prices
 
     def test_checks_should_buy(self):
         num_prices = len(read_price_history(log_file))
-        self.tester.simulate_trading(draw=False)
+        self.tester.simulate_trading()
         assert self.tester.algorithm.n_check_buy == num_prices
 
     def test_checks_should_sell(self):
         num_prices = len(read_price_history(log_file))
         self.tester.algorithm.should_buy = False
-        self.tester.simulate_trading(draw=False)
+        self.tester.simulate_trading()
         assert self.tester.algorithm.n_check_sell == num_prices
 
     def test_checks_buy_volume(self):
         num_prices = len(read_price_history(log_file))
         self.tester.algorithm.should_buy = True
-        self.tester.simulate_trading(draw=False)
+        self.tester.simulate_trading()
         assert self.tester.algorithm.n_buy_volume == num_prices
 
     def test_checks_sell_volume(self):
         num_prices = len(read_price_history(log_file))
         self.tester.algorithm.should_sell = True
-        self.tester.simulate_trading(draw=False)
+        self.tester.simulate_trading()
         assert self.tester.algorithm.n_sell_volume == num_prices
 
     def test_add_transaction_for_buy(self):
         num_prices = len(read_price_history(log_file))
         self.tester.algorithm.should_buy = True
-        self.tester.simulate_trading(draw=False)
+        self.tester.simulate_trading()
         assert len(self.tester.buys) == num_prices
 
     def test_adds_transaction_for_sell(self):
         num_prices = len(read_price_history(log_file))
         self.tester.algorithm.should_sell = True
-        self.tester.simulate_trading(draw=False)
+        self.tester.simulate_trading()
         assert len(self.tester.sells) == num_prices
 
     def test_buy_updates_holdings_history(self):
         num_prices = len(read_price_history(log_file))
         self.tester.algorithm.should_buy = True
-        self.tester.simulate_trading(draw=False)
+        self.tester.simulate_trading()
         assert len(self.tester.holdings_history) == num_prices + 1
 
     def test_buy_updates_balance_history(self):
         num_prices = len(read_price_history(log_file))
         self.tester.algorithm.should_buy = True
-        self.tester.simulate_trading(draw=False)
+        self.tester.simulate_trading()
         assert len(self.tester.balance_history) == num_prices + 1
 
     def test_sell_updates_holdings_history(self):
         num_prices = len(read_price_history(log_file))
         self.tester.algorithm.should_sell = True
-        self.tester.simulate_trading(draw=False)
+        self.tester.simulate_trading()
         assert len(self.tester.holdings_history) == num_prices + 1
 
     def test_sell_updates_balance_history(self):
         num_prices = len(read_price_history(log_file))
         self.tester.algorithm.should_sell = True
-        self.tester.simulate_trading(draw=False)
+        self.tester.simulate_trading()
         assert len(self.tester.balance_history) == num_prices + 1
 
     def test_buy_updates_balance(self):
         original_balance = self.tester.balance
         self.tester.algorithm.should_buy = True
-        self.tester.simulate_trading(draw=False)
+        self.tester.simulate_trading()
         assert self.tester.balance != original_balance
 
     def test_buy_updates_holdings(self):
         original_holdings = self.tester.holdings
         self.tester.algorithm.should_buy = True
-        self.tester.simulate_trading(draw=False)
+        self.tester.simulate_trading()
         assert self.tester.holdings != original_holdings
 
     def test_sell_updates_balance(self):
         original_balance = self.tester.balance
         self.tester.algorithm.should_sell = True
-        self.tester.simulate_trading(draw=False)
+        self.tester.simulate_trading()
         assert self.tester.balance != original_balance
 
     def test_sell_updates_holdings(self):
         original_holdings = self.tester.holdings
         self.tester.algorithm.should_sell = True
-        self.tester.simulate_trading(draw=False)
+        self.tester.simulate_trading()
         assert self.tester.holdings != original_holdings
 
     def test_plot(self):

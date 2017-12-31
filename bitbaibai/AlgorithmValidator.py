@@ -6,7 +6,6 @@ A class that retroactively applies an algorithm to log data to see how it would
 have performed had it been used at that time. This is useful for evaluation the
 performance of new algorithms and for checking for bugs before going live.
 """
-import matplotlib.pyplot as plt
 from datetime import datetime
 from .TransationRecord import TransationRecord
 from .utils import read_price_history
@@ -25,7 +24,7 @@ class AlgorithmValidator:
         self.holdings_history = []
         self.balance_history = []
 
-    def simulate_trading(self, draw=True):
+    def simulate_trading(self):
         self.buys = []
         self.sells = []
         self._update_history(date=self.sample_history[-1].date)
@@ -52,11 +51,7 @@ class AlgorithmValidator:
                 self.sells.append(record)
                 self._update_history(date=sample.date)
 
-        if draw:
-            self.plot_results()
-
-    def plot_results(self):
-
+    def data_pairs_for_plotting(self):
         dates = [sample.date for sample in self.sample_history]
         prices = [sample.price for sample in self.sample_history]
         buy_dates = [action.date for action in self.buys]
@@ -68,11 +63,28 @@ class AlgorithmValidator:
         holdings_dates = [x[1] for x in self.holdings_history]
         holdings_values = [x[0] for x in self.holdings_history]
 
-        plt.plot(dates, prices)
-        plt.plot(buy_dates, buy_prices, 'o')
-        plt.plot(sell_dates, sell_prices, '*')
-        plt.gca().set_ylim([min(prices) * 0.9, max(prices) * 1.1])
-        plt.show()
+        return {
+            "prices": {
+                "dates": dates,
+                "values": prices
+            },
+            "buys": {
+                "dates": buy_dates,
+                "values": buy_prices
+            },
+            "sells": {
+                "dates": sell_dates,
+                "values": sell_prices
+            },
+            "balance": {
+                "dates": balance_dates,
+                "values": balance_values
+            },
+            "holdings": {
+                "dates": holdings_dates,
+                "values": holdings_values
+            }
+        }
 
     def _update_history(self, date):
         self.holdings_history.append((self.holdings, date))

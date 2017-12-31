@@ -3,6 +3,7 @@
 """
 Run an algorithm on past data to validate its operation
 """
+from matplotlib import pyplot
 from bitbaibai import AlgorithmValidator, ErikAlgorithm
 
 # Define the algorithm to test
@@ -19,4 +20,6 @@ balance = 5000.0
 validator = AlgorithmValidator(price_log, algorithm, holdings, balance)
 
 # Run validation and plot the results
-validator.simulate_trading(draw=True)
+validator.simulate_trading()
+plot_pairs = validator.data_pairs_for_plotting()
+print(plot_pairs)

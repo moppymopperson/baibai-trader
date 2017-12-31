@@ -1,6 +1,8 @@
-FROM continuumio/miniconda3
+FROM python:3
+RUN git clone https://github.com/veox/python3-krakenex krakenex
+WORKDIR /krakenex/
+RUN python setup.py install
 ADD . /bitbaibai
 WORKDIR /bitbaibai
-RUN pip install -r pip-requirements.txt
-RUN conda install --yes --file conda-requirements.txt 
+RUN pip install -r requirements.txt
 CMD ["python", "main.py"]
