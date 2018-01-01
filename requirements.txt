@@ -1,7 +1,6 @@
 file-read-backwards
 websocket-server
 numpy
-scipy
 nose
 python-dateutil
 requests
