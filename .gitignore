@@ -1,5 +1,6 @@
 # Log folder
 log_files/
+log_backup/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
