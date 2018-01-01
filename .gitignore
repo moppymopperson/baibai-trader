@@ -1,3 +1,7 @@
+# System
+.AppleDouble
+.vscode
+
 # Log folder
 log_files/
 log_backup/
